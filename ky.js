@@ -719,12 +719,12 @@ case 'promote': {
                 ky.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\nLink Group : ${groupMetadata.subject}`, m, { detectLink: true })
             }
             break
-            case 'pinterest': {
-                m.reply(mess.wait)
-                anu = await pinterest(text)
-                result = anu[Math.floor(Math.random(), anu.length)]
-                ky.sendMessage(m.chat, { image: { url: result }, caption: '▹ Media Url : '+result }, { quoted: m })
-            }
+	    case 'pinterest':
+            if(!text) return reply('gambar apa?')
+            let pin = await hx.pinterest(text)
+            let ac = pin[Math.floor(Math.random() * pin.length)]
+            let di = await getBuffer(ac)
+	    ky.sendMessage(m.chat, { image: { url: di }, caption: 'Nih gan'}, { quoted: m })
             break
             case 'wallpaper': {
                 m.reply(mess.wait)
