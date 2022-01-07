@@ -11,7 +11,6 @@ const fetch = require('node-fetch')
 const FileType = require('file-type')
 const { color, bgcolor } = require("./lib/color")
 const { smsg, isUrl, generateMessageTag } = require('./src/fungsi')
-const figlet = require('figlet')
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '')
 
 
@@ -22,21 +21,6 @@ async function start() {
         browser: ['ky Multi Device','Safari','1.0.0'],
         auth: state
     })
-    
-
-console.log(color(figlet.textSync('BOT WA', {
-
-		font: 'block',
-
-		horizontalLayout: 'default',
-
-		vertivalLayout: 'default',
-
-		width: 80,
-
-		whitespaceBreak: false
-
-	}), 'cyan'))
 
 	console.log(color('[Scurity Iky]', 'cyan'), color('Bot Online', 'yellow'))
 console.log(color('[WARNING]', 'cyan'), color(`INGFO CREATOR`, 'yellow'))
