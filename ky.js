@@ -537,41 +537,6 @@ var anjay = `http://zekais-api.herokuapp.com/text2png?text=${text}&color=white`
 sendStickerUrl(m.chat, anjay)
 break
 
-case 'storyanime':
-await reply ('wait for a few minutes')
-anu = `Done Masz`
-  message = await prepareWAMessageMedia({ video: {url:'https://megayaa.herokuapp.com/api/randomaesthetic' }, jpegThumbnail: fakeThumb}, { upload: ky.waUploadToServer })
-                template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
-                    templateMessage: {
-                        hydratedTemplate: {
-                            videoMessage: message.videoMessage,
-                            hydratedContentText: anu,
-                            hydratedButtons: [{
-                                urlButton: {
-                                    displayText: 'Source Code',
-                                    url: 'https://github.com/IkyOgiwara/IkyOgiwara'
-                                }
-                            }, {
-                                callButton: {
-                                    displayText: 'Number Phone Owner',
-                                    phoneNumber: '+62 852-1531-9934'
-                                }
-                            }, {
-                                quickReplyButton: {
-                                    displayText: 'Next',
-                                    id: 'storyanime'
-                                    }
-                                },{quickReplyButton: {
-                                    displayText: 'menu',
-                                    id: '.menu'
-                                }
-                            }]
-                        }
-                    }
-                }), { userJid: m.chat, quoted: m })
-                ky.relayMessage(m.chat, template.message, { messageId: template.key.id })
-             break
-
  case 'getvid':
  case 'getvidio':
 m.reply('process')
@@ -619,7 +584,8 @@ case 'neko':
 
 m.reply('Process')
 anu = `Done Masz`
-   message = await prepareWAMessageMedia({ image: {url: `https://api.waifu.pics/sfw/${command}` }}, { upload: ky.waUploadToServer })
+link = `https://api.waifu.pics/sfw/${command}`
+   message = await prepareWAMessageMedia({ image: {url: `${link.url}` }}, { upload: ky.waUploadToServer })
                  template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                     templateMessage: {
                         hydratedTemplate: {
@@ -720,11 +686,12 @@ case 'promote': {
             }
             break
 	    case 'pinterest':
+			m.reply('Process')
             if(!text) return reply('gambar apa?')
             let pin = await hx.pinterest(text)
             let ac = pin[Math.floor(Math.random() * pin.length)]
             let di = await getBuffer(ac)
-	    ky.sendMessage(m.chat, { image: { url: di }, caption: 'Nih gan'}, { quoted: m })
+	    ky.sendMessage(m.chat, { image:di , caption: 'Nih gan'}, { quoted: m })
             break
             case 'wallpaper': {
                 m.reply(mess.wait)
