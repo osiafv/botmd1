@@ -305,7 +305,7 @@ ky.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
 	
 
                 if (!ky.public) {
-            if (!m.key.fromMe && m.key.fromMe) return
+            if (!isCreator && !m.key.fromMe) return
         }
 const reply = (teks) => {
   var ids = teks.includes('@') ? teks.split('@'): []
