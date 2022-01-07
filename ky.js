@@ -584,8 +584,8 @@ case 'neko':
 
 m.reply('Process')
 anu = `Done Masz`
-link = `https://api.waifu.pics/sfw/${command}`
-   message = await prepareWAMessageMedia({ image: {url: `https://api.waifu.pics/sfw/${command}` }}, { upload: ky.waUploadToServer })
+var anu = await fetchJson(`https://api.waifu.pics/sfw/${command}`)
+   message = await prepareWAMessageMedia({ image: {url: anu.url } }, { upload: ky.waUploadToServer })
                  template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                     templateMessage: {
                         hydratedTemplate: {
@@ -597,8 +597,8 @@ link = `https://api.waifu.pics/sfw/${command}`
                                     id: 'waifu'
                                     }
                                 },{quickReplyButton: {
-                                    displayText: 'menu',
-                                    id: '.menu'
+                                    displayText: 'Next Neko',
+                                    id: 'neko'
                                 }
                             }]
                         }
@@ -686,19 +686,31 @@ case 'promote': {
             }
             break
 	    case 'pinterest':
+			case 'wallpaper':
 			m.reply('Process')
             if(!text) return reply('gambar apa?')
             let pin = await hx.pinterest(text)
             let ac = pin[Math.floor(Math.random() * pin.length)]
             let di = await getBuffer(ac)
+            anu = 'Done Masz'
+	    message = await prepareWAMessageMedia({ image: di }, { upload: ky.waUploadToServer })
+                 template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+                    templateMessage: {
+                        hydratedTemplate: {
+                            imageMessage: message.imageMessage,
+                            hydratedContentText: anu,
+                            hydratedButtons: [{
+                                quickReplyButton: {
+                                    displayText: 'Next Search',
+                                    id: `pinterest ${text}`
+                                    }
+                                }]
+                        }
+                    }
+                }), { userJid: m.chat, quoted: m })
+                ky.relayMessage(m.chat, template.message, { messageId: template.key.id })
+   break
 	    ky.sendMessage(m.chat, { image: di , caption: 'Nih gan'}, { quoted: m })
-            break
-            case 'wallpaper': {
-                m.reply(mess.wait)
-                anu = await wallpaper(text)
-                result = anu[Math.floor(Math.random(), anu.length)]
-                ky.sendMessage(m.chat, { image: { url: result.image }, caption: `▹ Title : ${result.title}\n▹ Category : ${result.type}\n▹ Media Url : ${result.image}` }, { quoted: m })
-            }
             break
             case 'wikimedia': {
                 m.reply(mess.wait)
