@@ -585,7 +585,7 @@ case 'neko':
 m.reply('Process')
 anu = `Done Masz`
 link = `https://api.waifu.pics/sfw/${command}`
-   message = await prepareWAMessageMedia({ image: {url: `${link.url}` }}, { upload: ky.waUploadToServer })
+   message = await prepareWAMessageMedia({ image: {url: `https://api.waifu.pics/sfw/${command}` }}, { upload: ky.waUploadToServer })
                  template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                     templateMessage: {
                         hydratedTemplate: {
@@ -691,7 +691,7 @@ case 'promote': {
             let pin = await hx.pinterest(text)
             let ac = pin[Math.floor(Math.random() * pin.length)]
             let di = await getBuffer(ac)
-	    ky.sendMessage(m.chat, { image:di , caption: 'Nih gan'}, { quoted: m })
+	    ky.sendMessage(m.chat, { image: di , caption: 'Nih gan'}, { quoted: m })
             break
             case 'wallpaper': {
                 m.reply(mess.wait)
