@@ -13,7 +13,7 @@ global.APIKeys = {
 }
 
 // Other
-global.owner = ['081248249833','081248249833']
+global.owner = ['6281248249833','6281248249833']
 global.packname = 'Lu Siapa'
 global.author = 'Kang Read doang'
 global.sessionName = 'session'
