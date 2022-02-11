@@ -481,7 +481,12 @@ case 'toimage': case 'toimg': {
                  anu = await fetchJson(`http://hadi-api.herokuapp.com/api/tiktok?url=${text}`)
                  ky.sendMessage(m.chat, { video: { url: anu.result.video.nowm } }, { quoted: m })
      		break
-
+             case 'ttaudio':
+                 reply(`_Hai kak ${pushname}_ _Kalo Audio Tidak Ada Suara Silahkan Ke File Wa Ganti .opus jadi .mp3/.m4a_`)
+                 var anu = await fetchJson(`http://hadi-api.herokuapp.com/api/tiktok?url=${text}`)
+                  var buff = await getBuffer(anu.result.audio_only.audio1)
+                  ky.sendMessage(m.chat, { audio: { url: anu.result.audio_only.original } }, { mimetype:'audio/m4a', quoted: m })
+            break
              case 'tiktok':
                 case 'tiktoknowm':
                 reply(mess.wait)
@@ -491,7 +496,7 @@ case 'toimage': case 'toimg': {
     		const { wm, nowm, audio } = result
     		axios.get(`https://tinyurl.com/api-create.php?url=${nowm}`)
     		.then(async (a) => {
-    		var me = `▹ Media Url : ${a.data}\n\n_Silahkan Reply Pesan Video ini Lalu ketik .tomp3 Untuk Menjadikan Audio_`
+    		var me = `▹ Media Url : ${a.data}\n\nNih Gan`
 		ky.sendMessage(m.chat, { video: { url: `${nowm}` },  caption: me }, { mimetype:'video/mp4', quoted: m })
 		})
 		})
@@ -560,25 +565,6 @@ reply(`eror`)
 console.log(res)
 sendFileFromUrl(from, `${res.result.link}`, `${res.result.desc}`, m)
                     break
-
-                    case "tomp3":
-if (!quoted) return reply("Reply videonya!");
-reply(mess.wait);
-encmedia = JSON.parse(JSON.stringify(m).replace("quotedM", "m"))
-          .message.extendedTextMessage.contextInfo;
-media = await ky.downloadAndSaveMediaMessage(encmedia);
-ran = getRandom(".mp4");
-exec(`ffmpeg -i ${media} ${ran}`, (err) => {
-fs.unlinkSync(media);
-if (err) return fakegroup(`Err: ${err}`);
-buffer453 = fs.readFileSync(ran);
-ky.sendMessage(from, buffer453, audio, {
-mimetype: "audio/mp4",
-quoted: m,
-});      
-fs.unlinkSync(ran);
-});
-break;  
 
 case 'waifu':
 case 'neko':
@@ -800,7 +786,7 @@ togif
 tourl
 
  *Download Menu*
-tiktok / tiktokapi
+tiktok / tiktokapi / ttaudio
 igdl
 igstory
 play [ judul/link ]
