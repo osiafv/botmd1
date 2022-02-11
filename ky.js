@@ -1,4 +1,3 @@
-
 require('./setting/script')
 const { default: makeWASocket,MessageType ,Presence ,
   MessageOptions , BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent,prepareWAMessageMedia, downloadContentFromMessage, downloadHistory, mentionedJid, proto, getMessage, generateWAMessageContent } = require('@adiwajshing/baileys-md')
@@ -6,6 +5,7 @@ const fs = require('fs')
 const util = require('util')
 const { tmpdir } = require("os")
 const Crypto = require("crypto")
+const ig = require('insta-fetcher')
 const webp = require("node-webpmux")
 const ff = require('fluent-ffmpeg')
 const chalk = require('chalk')
@@ -371,11 +371,11 @@ const textImg = (teks) => {
                             hydratedButtons: [{
                                 quickReplyButton: {
                                     displayText: 'Audio',
-                                    id: `playaudio ${q}`
+                                    id: `playaudio ${res.all[0].videoId}`
                                     }
                                 },{quickReplyButton: {
-                                    displayText: 'VIdeo',
-                                    id: `playvideo ${q}`
+                                    displayText: 'Video',
+                                    id: `playvideo ${res.all[0].videoId}`
                                 }
                             }]
                         }
@@ -393,8 +393,8 @@ const textImg = (teks) => {
                         const { dl_link, thumb, title, filesizeF, filesize } = res
                         axios.get(`https://tinyurl.com/api-create.php?url=${dl_link}`)
                         .then((a) => {
-                        if (Number(filesize) >= 1000000) return sendFileFromUrl(from, thumb, `─ 「 PLAY MP3 」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n*▢ URL :* ${a.data}\n\n─━─━「 ‼️ 」━─━─\n*DURASI MELEBIHI BATAS, ANDA BISA DOWNLOAD MELALUI URL DI ATAS*`, m)
-                        const captionis = `─ 「 PLAY MP3 」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n*▢ URL :* ${a.data}\n\n─━─━「 WAIT 」━─━─\n_LAGU SEDANG DI KIRIM MUNGKIN BUTUH BEBERAPA MENIT_`
+                        if (Number(filesize) >= 300000) return sendFileFromUrl(from, thumb, `─ 「 PLAY AUDIO  」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n*▢ URL :* ${a.data}\n\n─━─━「 ‼️ 」━─━─\n*DURASI MELEBIHI BATAS, ANDA BISA DOWNLOAD MELALUI URL DI ATAS*`, m)
+                        const captionis = `─ 「 PLAY AUDIO 」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n\n─━─━「 WAIT 」━─━─\n_LAGU SEDANG DI KIRIM MUNGKIN BUTUH BEBERAPA MENIT_`
                         sendFileFromUrl(from, thumb, captionis, m)
                         sendFileFromUrl(from, dl_link, '', m)
                         })
@@ -404,7 +404,7 @@ const textImg = (teks) => {
                         reply(`${err}`)
                         }   
                            break
-             case 'playvideo': case 'ytmp4':
+                           case 'playvideo': case 'ytmp4':
                             if (args.length < 1) return reply(`Textnya Mana Cuy?\nContoh : ${prefix + command} Melukis Senja`)
                             try {
                             let yut = await yts(q)
@@ -415,9 +415,8 @@ const textImg = (teks) => {
                             axios.get(`https://tinyurl.com/api-create.php?url=${dl_link}`)
                             .then((a) => {
                             	     vd = getBuffer (dl_link)
-                            
-                            if (Number(filesize) >= 1000000) return sendFileFromUrl(from, thumb, `─ 「 PLAY VIDEO 」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n*▢ URL :* ${a.data}\n\n─━─━「 ‼️ 」━─━─\n*DURASI MELEBIHI BATAS, ANDA BISA DOWNLOAD MELALUI URL DI ATAS*`, msg)
-                            const captionis = `─ 「 PLAY VIDEO 」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n*▢ URL :* ${a.data}\n\n─━─━「 WAIT 」━─━─\n_VIDEO SEDANG DI KIRIM MUNGKIN BUTUH BEBERAPA MENIT_`
+                            if (Number(filesize) >= 300000) return sendFileFromUrl(from, thumb, `─ 「 PLAY VIDEO 」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n*▢ URL :* ${a.data}\n\n─━─━「 ‼️ 」━─━─\n*DURASI MELEBIHI BATAS, ANDA BISA DOWNLOAD MELALUI URL DI ATAS*`, msg)
+                            const captionis = `─ 「 PLAY VIDEO 」─\n\n*▢ Title :* ${title}\n*▢ ID :* ${yut.videos[0].videoId}\n\n─━─━「 WAIT 」━─━─\n_VIDEO SEDANG DI KIRIM MUNGKIN BUTUH BEBERAPA MENIT_`
                            
                             sendFileFromUrl(from, thumb, captionis, m)
                             sendFileFromUrl(from, dl_link, '', m)
@@ -476,39 +475,7 @@ case 'toimage': case 'toimg': {
                 })
             }
             break
-                
 
-case 'igvidio':
-case 'igvid':
-m.reply('process')
-anu = await igDownloader(`${teks}`)
-
-ky.sendMessage(m.chat , { video : { url : `${anu.result.link}`} , caption: `${anu.result.desc}` , quoted : m })
-break
-case 'igft': 
-case 'igfoto':
-m.reply('process')
-ttt = await igDownloader (`https://www.instagram.com/p/CMl92cVpeaJ/?utm_medium=share_sheet`)
-
-return ttt
-break 
-case 'insta':
-xfar.Instagram(args[1]).then(async data => {
-                    let txt = `*----「 INSTAGRAM DOWNLOADER 」----*\n\n`
-                    txt += `*📫 Title :* ${data.title}\n`
-                    txt += `*🎥📸 Total File :* ${data.medias.length}\n`
-                    txt += `*📚 Url Source :* ${data.url}\n\n`
-                    txt += `*Mohon tunggu sebentar kak, sedang proses pengiriman...*`
-                    await sendFileFromUrl(from,data.thumbnail,txt,msg).then(async res => {
-                        for (let i of data.medias) {
-                            sendFileFromUrl(from, i.url, '', res)
-                        }
-                    })
-                })
-                break
-
-break
-                 break
             case 'tiktokapi': case 'tiktok1':
                  reply(mess.wait)
                  anu = await fetchJson(`http://hadi-api.herokuapp.com/api/tiktok?url=${text}`)
@@ -578,7 +545,41 @@ for (let i = 0; i < a.data.data.length; i++) {
 
 ky.sendMessage(m.chat, { text : `${teks}` },{ quoted: m})
 
-break
+case 'tiktokapi': case 'tiktok1':
+                 reply(mess.wait)
+                 anu = await fetchJson(`https://megayaa.herokuapp.com/api/igdl?url=${text}`)
+                 ky.sendMessage(m.chat, { video: { url: anu.result.video.nowm } }, { quoted: m })
+     		break
+
+case 'ig':
+if (!text) return reply('Linknya?')
+var { igDownloader } = require('./lib/igdown')
+   res = await igDownloader(`${text}`).catch(e => {
+reply(`eror`)
+})
+console.log(res)
+sendFileFromUrl(from, `${res.result.link}`, `${res.result.desc}`, m)
+                    break
+
+                    case "tomp3":
+if (!quoted) return reply("Reply videonya!");
+reply(mess.wait);
+encmedia = JSON.parse(JSON.stringify(m).replace("quotedM", "m"))
+          .message.extendedTextMessage.contextInfo;
+media = await ky.downloadAndSaveMediaMessage(encmedia);
+ran = getRandom(".mp4");
+exec(`ffmpeg -i ${media} ${ran}`, (err) => {
+fs.unlinkSync(media);
+if (err) return fakegroup(`Err: ${err}`);
+buffer453 = fs.readFileSync(ran);
+ky.sendMessage(from, buffer453, audio, {
+mimetype: "audio/mp4",
+quoted: m,
+});      
+fs.unlinkSync(ran);
+});
+break;  
+
 case 'waifu':
 case 'neko':
 
@@ -745,7 +746,6 @@ case 'promote': {
                 oldd = performance.now()
                 respon = `
 Kecepatan Respon ${latensi.toFixed(4)} _Second_ \n ${oldd - neww} _miliseconds_\nRuntime : ${runtime(process.uptime())}
-
 💻 Info Server
 RAM: ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
 `.trim()
@@ -784,59 +784,48 @@ RAM: ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
 		    let encmedia = await ky.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
 		    await fs.unlinkSync(encmedia)
 		
-	    }
+	    }}
 	    break
-
-     }
        case 'tes': case 'menu': case 'help': 
                 anu = `
  Hi ${pushname} Di Sini Bot Pribadi
  WhatsApp 
-
  #ping
+
  *Simple Menu*
- 
-#sticker
-#toimg
-#tomp4
-#togif
-#tourl
+sticker
+toimg
+tomp4
+togif
+tourl
 
  *Download Menu*
- 
-#tiktok / tiktokapi
-#igfoto
-#igvideo
-#igstory
-#getfoto
-#getvid
-#play [ judul/link ]
-#ytmp4 / ytmp3
+tiktok / tiktokapi
+igdl
+igstory
+play [ judul/link ]
+ytmp4 / ytmp3
 
  *Group Menu*
- 
-#linkgroup
-#grup [ close/open]
-#setname
-#setpp
+linkgroup
+grup [ close/open]
+setname
+setpp
 
  *Search Menu*
- 
-#pinterest
-#wallpaper
-#wikimedia
+pinterest
+wallpaper
+wikimedia
 
  *Random Menu*
-
-#waifu
-#neko
+waifu
+neko
  
  *owner Menu*
  
-#self
-#public
-# > / =>
-
+self
+public
+ > / =>
 `
                  message = await prepareWAMessageMedia({ image: fs.readFileSync('./setting/iky.jpg') , jpegThumbnail: fs.readFileSync('./setting/fake.jpg') }, { upload: ky.waUploadToServer })
                  template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
